@@ -917,7 +917,7 @@ int grid_contains_duplicates(const char *grid, int w, int h)
             if (grid[j*w+i]=='#') continue;
             for (end=i; end < w; ++end) {
                 if (grid[j*w+end]=='#') break;
-                if (grid[j*w+end]=='.') invalid = 1;
+                if (strchr(".01", grid[j*w+end])) invalid = 1;
             }
             if (invalid) continue;
             if ((dict[len] = malloc(end-i+1)) == NULL) {
@@ -939,7 +939,7 @@ int grid_contains_duplicates(const char *grid, int w, int h)
             if (grid[j*w+i]=='#') continue;
             for (end=j; end < h; ++end) {
                 if (grid[end*w+i]=='#') break;
-                if (grid[end*w+i]=='.') invalid = 1;
+                if (strchr(".01", grid[end*w+i])) invalid = 1;
             }
             if (invalid) continue;
             if ((dict[len] = malloc(end-j+1)) == NULL) {
