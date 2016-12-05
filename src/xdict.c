@@ -136,15 +136,9 @@ int main(void)
                 puts("Sorting dictionary...");
                 xdict_sort(&dict);
             }
-            if (xdict_save_small(&dict, XDICT_SAVE_TXT))
-              puts("Dictionary not saved");
-            puts("Saved successfully.");
-            modified = 0;
-        }
-        else if (strcmp(cmd, "SAVEA\n") == 0) {
             if (xdict_save(&dict, XDICT_SAVE_TXT))
               puts("Dictionary not saved");
-            puts("Saved successfully");
+            puts("Saved successfully.");
             modified = 0;
         }
         else if (!strcmp(cmd, "QUIT\n") || !strcmp(cmd, "EXIT\n")) {
@@ -195,7 +189,7 @@ int main(void)
             puts("Sorting dictionary...");
             xdict_sort(&dict);
         }
-        if (xdict_save_small(&dict, XDICT_SAVE_TXT))
+        if (xdict_save(&dict, XDICT_SAVE_TXT))
           do_error("Dictionary not saved");
         puts("Saved successfully");
     }
@@ -320,8 +314,7 @@ void do_help(void)
     puts("HELP          This message");
     puts("HELP VERBOSE  Complete man pages for xdict");
     puts("QUIT, EXIT    (Save and) exit, the same as Ctrl-D");
-    puts("SAVE          Save compressed word list into " XDICT_SAVE_TXT);
-    puts("SAVEA         Save uncompressed word list");
+    puts("SAVE          Save the word list into " XDICT_SAVE_TXT);
     puts("SORT          Sort the dictionary");
     puts("STAT          Display some statistical details");
     puts("ch0rtl*       Display matching word(s)");
@@ -349,35 +342,22 @@ void do_man(int page_height)
     page("  The 'xdict' utility is a crossword dictionary. It supports");
     page("various kinds of wildcard searches, including restricting");
     page("the wildcards to vowels or consonants.");
-    glob_paralines = 5;
+    glob_paralines = 4;
     page("  The word list for the dictionary is stored in the text file");
-    page("'" XDICT_SAVE_TXT "'. That file in its simplest form is just");
-    page("a list of words: one word per line. Words must be completely");
-    page("alphabetic, and can't have any embedded spaces; capitalization");
-    page("is irrelevant.");
-    glob_paralines = 11;
-    page("  By default, the word list is saved in a slightly more complex");
-    page("format, to save disk space. In the compressed format, the pair");
-    page("of words \"bed\" and \"beds\" would be stored as \"bed/s\" (on a");
-    page("single line). The regular verb \"add, adds, added, adding\" is");
-    page("stored as \"add/v\". There are also two other regular verb");
-    page("constructions, exemplified by \"tap/w\" (for the verb \"tape\")");
-    page("and \"tap/x\" (for the verb \"tap\"). This is a purely lossless");
-    page("and unambiguous form of compression, and very human-friendly,");
-    page("but it does make the file format rather idiosyncratic. Therefore,");
-    page("'xdict' provides the user meta-command SAVEA, which stores the");
-    page("dictionary word list in the \"simplest form\" detailed above.");
+    page("'" XDICT_SAVE_TXT "'. That file is just a list of words: one");
+    page("word per line. Words must be completely alphabetic, and can't");
+    page("have any embedded spaces; capitalization is irrelevant.");
     glob_paralines = 10;
-    page("  The user meta-command SAVE saves the word list in compressed");
-    page("form. It will sort the dictionary first, if needed.");
+    page("  The user meta-command SAVE saves the word list back to that");
+    page("file. It will sort the dictionary first, if needed.");
     page("  When the program exits normally --- upon encountering the");
     page("end-of-file marker or one of the user meta-commands QUIT and EXIT");
     page("--- it will check to see whether the dictionary has been modified");
     page("by any ADD or REM commands since the last time it was saved. If");
     page("the word list has been modified, then it will sort the list and");
-    page("save it in the compressed format. If the word list is unmodified,");
-    page("the program will free its resources and exit without performing");
-    page("the redundant save operation.");
+    page("save it. If the word list is unmodified, the program will free");
+    page("its resources and exit without performing the redundant save");
+    page("operation.");
     glob_paralines = 8;
     page("  The user meta-command STAT can be used to see whether the");
     page("dictionary has been modified, and whether it is currently sorted.");
@@ -387,12 +367,10 @@ void do_man(int page_height)
     page("therefore the meta-command 'SET be??_f' yields the three letters");
     page("\"elo\", and 'SET be_??f' yields \"hl\". All the normal wildcards");
     page("can be used in SET commands.");
-    glob_paralines = 5;
+    glob_paralines = 3;
     page("  All the normal wildcards can be used in REM commands, also;");
     page("the command 'REM foo*' will remove \"food\" and \"footstool\".");
-    page("Wildcards cannot be used with ADD, for obvious reasons; you must");
-    page("enter 'ADD draft' and 'ADD drafted' individually, for example.");
-    page("However, 'ADD draft/s' will add both \"draft\" and \"drafts\".");
+    page("As a shortcut, 'ADD draft/s' will add both \"draft\" and \"drafts\".");
     glob_paralines = 4;
     page("  Type 'HELP' for a brief summary of commands and wildcards, or");
     page("'HELP VERBOSE' for this message again. Type 'HELP VERBOSE k' to");

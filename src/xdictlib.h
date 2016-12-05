@@ -32,7 +32,6 @@ int xdict_load(struct xdict *d, const char *fname);
   int xdict_remmatch(struct xdict *d, const char *pat, int len);
 void xdict_sort(struct xdict *d);
 int xdict_save(struct xdict *d, const char *fname);
-int xdict_save_small(struct xdict *d, const char *fname);
 void xdict_free(struct xdict *d);
 int xdict_find(struct xdict *d, const char *pattern,
                int (*f)(const char *, void *), void *info);

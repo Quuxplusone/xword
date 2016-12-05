@@ -6,28 +6,13 @@
 #include <string.h>
 #include "xdictlib.h"
 
-enum {
-    POS_NORMAL, POS_PLURAL, POS_VERB, POS_VERBE, POS_VERBB,
-    POS_COVERED
-};
-
 #define is_consonant(k) (strchr("bcdfghjklmnpqrstvwxyz",k) != NULL)
 #define is_vowel(k) (strchr("aeiouy",k) != NULL)
-
 
 /*
    For the time being, the |xdict| data is stored to disk as a single 
    gigantic text file, containing all the words in the dictionary in
    plain text separated by newlines.
-
-   Update, 16 March 2005: Related words may be stored in the file as
-   "foo/s", indicating that both "foo" and "foos" are words; as
-   "foo/v", indicating that "foo", "foos", "fooed", and "fooing" are
-   words; as "foo/w", indicating that "fooe", "fooes", "fooed", and
-   "fooing" are words; or as "fop/x", indicating that "fop", "fops",
-   "fopped", and "fopping" are words. It is allowed for "foo/v", for
-   example, to indicate the presence of the shorter word forms, even
-   when "fooing" has more than |XDICT_MAXLENGTH| letters.
 */
 int xdict_load(struct xdict *d, const char *fname)
 {
@@ -37,72 +22,11 @@ int xdict_load(struct xdict *d, const char *fname)
     if (in == NULL)  return -1;
     while (fgets(buffer, (sizeof buffer)-5, in) != NULL) {
         char *p = strchr(buffer, '\n');
-        int buflen, rc;
+        int rc;
         if (p == NULL)  { rc = -2; goto done; }
         *p = '\0';
-        buflen = (p - buffer);
-        p = strchr(buffer, '/');
-        if (p != NULL) {
-            switch (p[1]) {
-                case 's': case 'S':
-                    rc = xdict_addword(d, buffer, p - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "s");
-                    rc = xdict_addword(d, buffer, (p+1) - buffer);
-                    if (rc < -1) goto done;
-                    break;
-                case 'v': case 'V':
-                    rc = xdict_addword(d, buffer, p - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "s");
-                    rc = xdict_addword(d, buffer, (p+1) - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "ed");
-                    rc = xdict_addword(d, buffer, (p+2) - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "ing");
-                    rc = xdict_addword(d, buffer, (p+3) - buffer);
-                    if (rc < -1) goto done;
-                    break;
-                case 'w': case 'W':
-                    strcpy(p, "e");
-                    rc = xdict_addword(d, buffer, (p+1) - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "es");
-                    rc = xdict_addword(d, buffer, (p+2) - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "ed");
-                    rc = xdict_addword(d, buffer, (p+2) - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "ing");
-                    rc = xdict_addword(d, buffer, (p+3) - buffer);
-                    if (rc < -1) goto done;
-                    break;
-                case 'x': case 'X':
-                    rc = xdict_addword(d, buffer, p - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "s");
-                    rc = xdict_addword(d, buffer, (p+1) - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "xed");
-                    p[0] = p[-1];
-                    rc = xdict_addword(d, buffer, (p+3) - buffer);
-                    if (rc < -1) goto done;
-                    strcpy(p, "xing");
-                    p[0] = p[-1];
-                    rc = xdict_addword(d, buffer, (p+4) - buffer);
-                    if (rc < -1) goto done;
-                    break;
-                default:
-                    rc = xdict_addword(d, buffer, buflen);
-                    if (rc < -1) goto done;
-                    break;
-            }
-        }
-        else {
-            rc = xdict_addword(d, buffer, buflen);
-            if (rc < -1) goto done;
-        }
+        rc = xdict_addword(d, buffer, p - buffer);
+        if (rc < -1) goto done;
     }
   done:
     fclose(in);
@@ -120,164 +44,6 @@ int xdict_save(struct xdict *d, const char *fname)
     for (k=0; k < XDICT_MAXLENGTH; ++k) {
         for (i=0; i < d->len[k]; ++i) {
             fprintf(out, "%s\n", d->words[k][i].word);
-        }
-    }
-    fclose(out);
-    return 0;
-}
-
-
-/*
-   Given an entry in the dictionary, determine whether it is a "root"
-   of a verb or plural construction ("bake"), or a normal word with no
-   derivative words in the dictionary ("whoever"), or a word that will
-   be covered by some other root word ("baking"). Some words may be
-   covered twice; for example, "pol/v" and "pol/w" both cover "poling"
-   in a dictionary containing "pol" and "pols" as well as "pole",
-   "poles", and "poled". Some words may appear at first glance to
-   be covered when they're not; for example, "princess" is not covered
-   by "princes" if the dictionary also contains "prince". To deal with
-   the "princes/princess" problem, we allow |pos_categorize| to call
-   itself recursively, but only on /shorter/ words, never longer ones!
-   Then consider the entry "fling/v", which is a root word even though
-   it ends in "-ing". This shows that we must check each word for rootness
-   as well as coveredness.
-
-   Todo: Given "car, cars, care, cares, cared, caring", we incorrectly
-   store both "car/v" and "car/w", leading to duplicate entries for
-   "cared" and "caring". This is incorrect behavior.
-*/
-static int pos_categorize(struct xdict *d, const char *word, int k)
-{
-    char buffer[XDICT_MAXLENGTH+4];
-    int ends_with_ing = (k >= 6 && !memcmp(word+k-3, "ing", 3));
-    int ends_with_ed = (k >= 5 && !memcmp(word+k-2, "ed", 2));
-    int ends_with_es = (k >= 4 && !memcmp(word+k-2, "es", 2));
-    int ends_with_s = (k >= 4 && (word[k-1] == 's'));
-    int ends_with_e = (k >= 3 && (word[k-1] == 'e'));
-    int rc;
-
-    if (ends_with_s || ends_with_es) {
-        sprintf(buffer, "%.*s", k-1, word);
-        if (xdict_find(d, buffer, NULL, NULL) > 0) {
-            rc = pos_categorize(d, buffer, k-1);
-            if (rc == POS_VERB || rc == POS_VERBE ||
-                rc == POS_VERBB || rc == POS_PLURAL)
-              return POS_COVERED;
-        }
-    }
-    else if (ends_with_ed) {
-        sprintf(buffer, "%.*s", k-2, word);
-        if (xdict_find(d, buffer, NULL, NULL) > 0) {
-            rc = pos_categorize(d, buffer, k-2);
-            if (rc == POS_VERB) return POS_COVERED;
-        }
-        sprintf(buffer, "%.*se", k-2, word);
-        if (xdict_find(d, buffer, NULL, NULL) > 0) {
-            rc = pos_categorize(d, buffer, k-1);
-            if (rc == POS_VERBE) return POS_COVERED;
-        }
-        if (word[k-4] == word[k-3]) {
-            sprintf(buffer, "%.*s", k-3, word);
-            if (xdict_find(d, buffer, NULL, NULL) > 0) {
-                rc = pos_categorize(d, buffer, k-3);
-                if (rc == POS_VERBB) return POS_COVERED;
-            }
-        }
-    }
-    else if (ends_with_ing) {
-        sprintf(buffer, "%.*s", k-3, word);
-        if (xdict_find(d, buffer, NULL, NULL) > 0) {
-            rc = pos_categorize(d, buffer, k-3);
-            if (rc == POS_VERB) return POS_COVERED;
-        }
-        sprintf(buffer, "%.*se", k-3, word);
-        if (xdict_find(d, buffer, NULL, NULL) > 0) {
-            rc = pos_categorize(d, buffer, k-2);
-            if (rc == POS_VERBE) return POS_COVERED;
-        }
-        if (word[k-5] == word[k-4]) {
-            sprintf(buffer, "%.*s", k-4, word);
-            if (xdict_find(d, buffer, NULL, NULL) > 0) {
-                rc = pos_categorize(d, buffer, k-4);
-                if (rc == POS_VERBB) return POS_COVERED;
-            }
-        }
-    }
-
-    /*
-       Okay, this word isn't covered by any shorter root word.
-       Is it a root word itself?
-    */
-    if (ends_with_e) {
-        sprintf(buffer, "%.*ses", k-1, word);
-        if (xdict_find(d, buffer, NULL, NULL) <= 0) return POS_NORMAL;
-        sprintf(buffer, "%.*sing", k-1, word);
-        if (xdict_find(d, buffer, NULL, NULL) == 0) return POS_PLURAL;
-        sprintf(buffer, "%.*sed", k-1, word);
-        if (xdict_find(d, buffer, NULL, NULL) == 0) return POS_PLURAL;
-        return POS_VERBE;
-    }
-    else {
-        int has_taping, has_taped;
-        sprintf(buffer, "%ss", word);
-        if (xdict_find(d, buffer, NULL, NULL) <= 0) return POS_NORMAL;
-
-        /* Look for "taping", if the root word is "tap". */
-        sprintf(buffer, "%sing", word);
-        has_taping = xdict_find(d, buffer, NULL, NULL);
-        if (has_taping == 0) goto look_for_tapping;
-
-        /* The entry "taping" was found (or too long). Look for "taped". */
-        sprintf(buffer, "%sed", word);
-        has_taped = xdict_find(d, buffer, NULL, NULL);
-        if (has_taped == 0) goto look_for_tapping;
-        if (has_taped > 0 || has_taping > 0) return POS_VERB;
-        return POS_PLURAL;
-
-      look_for_tapping:        
-        sprintf(buffer, "%s%cing", word, word[k-1]);
-        if (xdict_find(d, buffer, NULL, NULL) == 0) return POS_PLURAL;
-        sprintf(buffer, "%s%ced", word, word[k-1]);
-        if (xdict_find(d, buffer, NULL, NULL) <= 0) return POS_PLURAL;
-        return POS_VERBB;
-    }
-}
-
-/*
-   This routine saves out the dictionary using the "updated" compression
-   scheme: we look for plurals and verb tenses while saving the
-   dictionary. This will run very slowly if the last operation on the
-   dictionary didn't leave it sorted!
-*/
-int xdict_save_small(struct xdict *d, const char *fname)
-{
-    FILE *out = fopen(fname, "w");
-    size_t i;
-    int k;
-
-    if (out == NULL)  return -1;
-    for (k=0; k < XDICT_MAXLENGTH; ++k) {
-        for (i=0; i < d->len[k]; ++i) {
-            char *word = d->words[k][i].word;
-            switch (pos_categorize(d, word, k)) {
-                case POS_NORMAL:
-                    fprintf(out, "%s\n", word);
-                    break;
-                case POS_VERB:
-                    fprintf(out, "%s/v\n", word);
-                    break;
-                case POS_VERBE:
-                    fprintf(out, "%.*s/w\n", k-1, word);
-                    break;
-                case POS_VERBB:
-                    fprintf(out, "%s/x\n", word);
-                    break;
-                case POS_PLURAL:
-                    fprintf(out, "%s/s\n", word);
-                    break;
-                case POS_COVERED: break;
-            }
         }
     }
     fclose(out);
