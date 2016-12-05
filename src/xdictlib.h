@@ -11,7 +11,7 @@
    The |xdict| interface.
 */
 
-#define XDICT_MAXLENGTH 10  /* 0..9 characters */
+#define XDICT_MAXLENGTH 16  /* 0..15 characters */
 
 struct xdict {
     struct word_entry *words[XDICT_MAXLENGTH];
