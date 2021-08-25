@@ -149,7 +149,6 @@ int process(FILE *in, FILE *out)
     int xmax, ymax;
     int x, y;
     int (*clues)[3], clue_idx, clue_max;
-    int clue_width;
     char **hcluetext = NULL, **vcluetext = NULL;
 
     read_xword(in, grid, &xmax, &ymax);
@@ -171,7 +170,6 @@ int process(FILE *in, FILE *out)
     trim_xword(grid, &xmax, &ymax);
 
     compute_clue_positions(grid, xmax, ymax, &clues, &clue_max);
-    clue_width = (clue_max < 10)? 1: (clue_max < 100)? 2: 3;
 
     read_clues(in, clue_max, &hcluetext, &vcluetext);
 
@@ -179,6 +177,9 @@ int process(FILE *in, FILE *out)
        Now we begin our output routine.
     */
     fprintf(out, "\\documentclass%s{article}\n", (UseCwpuzzleSty? "": "[twocolumn]"));
+    fprintf(out, "\\usepackage[left=1cm, right=1cm, top=2cm, bottom=1cm]{geometry}\n");
+    fprintf(out, "\\usepackage[utf8]{inputenc}\n");
+    fprintf(out, "\\usepackage[T1]{fontenc}\n");
     if (UseCwpuzzleSty) {
         fprintf(out, "\\usepackage{cwpuzzle}\n\n");
         fprintf(out, "\\newenvironment{AcrossClues}{\\begin{Clues}{\\textbf{Across}}{\\end{Clues}}\n");
@@ -186,11 +187,6 @@ int process(FILE *in, FILE *out)
     }
     else
       dump_boilerplate(out, xmax, ymax);
-    fprintf(out, "\\setlength{\\oddsidemargin}{-.5in}\n");
-    fprintf(out, "\\setlength{\\evensidemargin}{-.5in}\n");
-    fprintf(out, "\\setlength{\\textwidth}{7.5in}\n");
-    fprintf(out, "\\setlength{\\topmargin}{-.5in}\n");
-    fprintf(out, "\\setlength{\\textheight}{10in}\n");
     fprintf(out, "\\begin{document}\n");
     fprintf(out, "\\pagestyle{empty}\\raggedright\n");
 
@@ -206,20 +202,19 @@ int process(FILE *in, FILE *out)
     for (y=0; y < ymax; ++y) {
         fprintf(out, "  ");
         for (x=0; x < xmax; ++x) {
-            if (grid[y][x] == '#') {
-              fprintf(out, "|* ");
+            char cell = grid[y][x];
+            if (cell == '.') {
+                cell = 'X';  // '.' is magic to cwpuzzle.sty
+            }
+            if (cell == '#') {
+                fprintf(out, "|* ");
             }
             else if ((clues[clue_idx][0]==x) && (clues[clue_idx][1]==y)) {
-                if (clue_idx+1 < 10)
-                  fprintf(out, "|[%1d]%c ", clue_idx+1, grid[y][x]);
-                else if (clue_idx+1 < 100)
-                  fprintf(out, "|[%2d]%c ", clue_idx+1, grid[y][x]);
-                else
-                  fprintf(out, "|[%3d]%c ", clue_idx+1, grid[y][x]);
+                fprintf(out, "|[%d]%c ", clue_idx+1, cell);
                 ++clue_idx;
             }
             else {
-                fprintf(out, "|%c ", grid[y][x]);
+                fprintf(out, "|%c ", cell);
             }
         }
         fprintf(out, "|.\n");
@@ -653,7 +648,7 @@ static int dump_boilerplate(FILE *out, int xmax, int ymax)
     fprintf(out, "\\endgroup\n");
     fprintf(out, "\\newenvironment{Puzzle}[2]{"
                                     "\\par\\noindent\\PuzzleHelper\n");
-    fprintf(out, "  \\let\\unitlength=\\PuzzleUnitlength" 
+    fprintf(out, "  \\let\\unitlength=\\PuzzleUnitlength"
                                                     " \\PuzzleY=#2\n");
     fprintf(out, "  \\begin{picture}(#1,#2)\\PuzzleBox.\n");
     fprintf(out, "}{\\end{picture}\\par\\noindent}\n");
@@ -669,12 +664,6 @@ static int dump_boilerplate(FILE *out, int xmax, int ymax)
     fprintf(out, "\\newcommand\\Clue[3]{\\noindent"
                            "\\makebox[0pt][l]{#1.}\\qquad #3\\par}\n");
     fprintf(out, "\n");
-    fprintf(out, "\\setlength{\\oddsidemargin}{-.5in}\n");
-    fprintf(out, "\\setlength{\\evensidemargin}{-.5in}\n");
-    fprintf(out, "\\setlength{\\textwidth}{7.5in}\n");
-    fprintf(out, "\\setlength{\\topmargin}{-.5in}\n");
-    fprintf(out, "\\setlength{\\textheight}{10in}\n");
-    fprintf(out, "\\setlength{\\parskip}{2pt}\n");
     return 0;
 }
 
