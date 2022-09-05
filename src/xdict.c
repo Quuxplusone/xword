@@ -118,6 +118,40 @@ int main(void)
                 else  display_set(NULL, NULL);
             }
         }
+        else if (strncmp(cmd, "RACK ", 5) == 0) {
+            int start, end;
+            int requiredstart;
+            int failed = 0;
+            for (start=5; isspace(cmd[start]); ++start);
+            for (end=start; !isspace(cmd[end]); ++end) {
+                if (cmd[end] == '_') {
+                    cmd[end] = '?';
+                } else if (cmd[end] == '*') {
+                    if (!failed) puts("Rack pattern must not contain '*'! Did you mean '?'?");
+                    failed = 1;
+                } else {
+                    cmd[end] = tolower(cmd[end]);
+                }
+            }
+            cmd[end++] = '\0';
+            requiredstart = end;
+            for (; isspace(cmd[requiredstart]); ++requiredstart);
+            if (cmd[requiredstart] != '\0') {
+                for (end = requiredstart; !isspace(cmd[end]); ++end) {
+                    if (isalpha(cmd[end])) {
+                        cmd[end] = tolower(cmd[end]);
+                    } else {
+                        if (!failed) puts("Rack's set of required letters must be strictly alphabetic!");
+                        failed = 1;
+                    }
+                }
+                cmd[end] = '\0';
+            }
+            if (!failed) {
+                rc = xdict_find_scrabble(&dict, cmd+start, cmd+requiredstart, printme, NULL);
+                engraveme(); printf("%d\n", rc);
+            }
+        }
         else if (strcmp(cmd, "SORT\n") == 0) {
             xdict_sort(&dict);
             puts("Done.");
@@ -319,6 +353,7 @@ void do_help(void)
     puts("STAT          Display some statistical details");
     puts("ch0rtl*       Display matching word(s)");
     puts("SET ch_rtl*   Display set of crossing letters");
+    puts("RACK cehlortz Show plays for the given Scrabble rack");
     puts("ADD chortle   Add a word to the dictionary");
     puts("REM ch0rtl*   Remove word(s) from the dictionary");
     puts("");
@@ -358,15 +393,24 @@ void do_man(int page_height)
     page("save it. If the word list is unmodified, the program will free");
     page("its resources and exit without performing the redundant save");
     page("operation.");
-    glob_paralines = 8;
+    glob_paralines = 2;
     page("  The user meta-command STAT can be used to see whether the");
     page("dictionary has been modified, and whether it is currently sorted.");
+    glob_paralines = 6;
     page("  The meta-command SET is used to find out quickly which letters");
     page("can be used in a given position. For example, searching on the");
     page("pattern 'be???f' yields the results \"behalf, behoof, belief\";");
     page("therefore the meta-command 'SET be??_f' yields the three letters");
     page("\"elo\", and 'SET be_??f' yields \"hl\". All the normal wildcards");
     page("can be used in SET commands.");
+    glob_paralines = 7;
+    page("  The meta-command RACK is used to find out (slowly) what words");
+    page("can be created from the given set of letters, as in Scrabble (but");
+    page("using the whole word list, not just Scrabble dictionary words).");
+    page("For example, the pattern 'abcde' yields \"cab\", \"bead\", and so");
+    page("on. The wildcard '?' can be used to indicate a blank tile; for");
+    page("example, the pattern 'abc?e' yields \"crab\" but not \"crabs\".");
+    page("The wildcard '*' cannot be used in RACK commands.");
     glob_paralines = 3;
     page("  All the normal wildcards can be used in REM commands, also;");
     page("the command 'REM foo*' will remove \"food\" and \"footstool\".");

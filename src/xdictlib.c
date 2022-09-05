@@ -315,3 +315,55 @@ int xdict_find(struct xdict *d, const char *pattern,
     }
 }
 
+static int xdict_match_scrabble(const char *w, const int *mincounts, const int *maxcounts)
+{
+    int counts[256] = {0};
+    for (int i=0; w[i] != '\0'; ++i) {
+        int ch = (unsigned char)w[i];
+        if (counts[ch] < maxcounts[ch]) {
+            counts[ch] += 1;
+        } else if (is_vowel(w[i]) && counts['0'] < maxcounts['0']) {
+            counts['0'] += 1;
+        } else if (is_consonant(w[i]) && counts['1'] < maxcounts['1']) {
+            counts['1'] += 1;
+        } else if (counts['?'] < maxcounts['?']) {
+            counts['?'] += 1;
+        } else {
+            return 0;
+        }
+    }
+    for (int ch = 0; ch < 256; ++ch) {
+        if (counts[ch] < mincounts[ch]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int xdict_find_scrabble(struct xdict *d, const char *rack, const char *mustuse,
+                        int (*f)(const char *, void *), void *info)
+{
+    int count = 0;
+    int mincounts[256] = {0};
+    int maxcounts[256] = {0};
+    for (int i = 0; rack[i] != '\0'; ++i) {
+        int ch = (unsigned char)rack[i];
+        maxcounts[ch] += 1;
+    }
+    for (int i = 0; mustuse[i] != '\0'; ++i) {
+        int ch = (unsigned char)mustuse[i];
+        mincounts[ch] += 1;
+    }
+    size_t minlen = strlen(mustuse) > 2 ? strlen(mustuse) : 2;
+    size_t maxlen = strlen(rack)+1 < XDICT_MAXLENGTH ? strlen(rack)+1 : XDICT_MAXLENGTH;
+    for (size_t len = minlen; len < maxlen; ++len) {
+        struct word_entry *w = d->words[len];
+        for (size_t i=0; i < d->len[len]; ++i) {
+            if (xdict_match_scrabble(w[i].word, mincounts, maxcounts)) {
+                ++count;
+                if (f && f(w[i].word, info)) return count;
+            }
+        }
+    }
+    return count;
+}

@@ -37,6 +37,8 @@ int xdict_find(struct xdict *d, const char *pattern,
                int (*f)(const char *, void *), void *info);
   int xdict_match_simple(const char *w, const char *p);
   int xdict_match(const char *w, const char *p);
+int xdict_find_scrabble(struct xdict *d, const char *rack, const char *mustuse,
+                        int (*f)(const char *, void *), void *info);
 
  #ifdef __cplusplus
    }
