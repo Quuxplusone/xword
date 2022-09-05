@@ -2,10 +2,10 @@
 /*
    |Xword-ent|, a public-domain program by Arthur O'Dwyer, December 2004.
 
-     This program reads a grid of letters and hashmarks (|#|) from 
-   a text file, and then outputs a list of all the words in the 
-   crossword, in normal crossword order; first the horizontal clues and 
-   then the vertical ones. Characters other than |#| and newlines are 
+     This program reads a grid of letters and hashmarks (|#|) from
+   a text file, and then outputs a list of all the words in the
+   crossword, in normal crossword order; first the horizontal clues and
+   then the vertical ones. Characters other than |#| and newlines are
    treated as letters for our purposes.
 
      There are several command-line options to this program that work
@@ -383,7 +383,7 @@ int process(FILE *in, FILE *out)
        Now that the grids and charts have been printed, we turn to
        printing the clues.  If the user has requested that we print the
        clues intermixed, then we have an easy time of it. Otherwise, we
-       will need to do two passes over the clue list: one for the 
+       will need to do two passes over the clue list: one for the
        horizontal clues and one for the verticals.
     */
     if (ShowTogether)

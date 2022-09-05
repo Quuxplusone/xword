@@ -1,7 +1,7 @@
 /*
    This library implements Donald Knuth's "Dancing Links" algorithm
    for solving "exact cover" problems on (0,1)-matrices. The routines
-   may be successfully applied to polyomino tilings, the solution of 
+   may be successfully applied to polyomino tilings, the solution of
    Sudoku puzzles, and even the filling of crossword grids.
 
    For Knuth's original paper, see
@@ -43,7 +43,7 @@ struct dance_matrix {
    is non-zero, |data| must point to a matrix of |rows|-times-|cols|
    integers, each being either 0 or 1. If |names| are provided, then
    there must be exactly |cols| of them. If |names| are not provided,
-   then the columns will be named with decimal integers, starting with 
+   then the columns will be named with decimal integers, starting with
    |"0"| and proceeding upward.
 
    The client may also provide an estimate |est| of the number of
@@ -59,7 +59,7 @@ int dance_init_named(struct dance_matrix *m,
         size_t rows, size_t cols, const int *data, char * const *names);
 int dance_init_cap(struct dance_matrix *m,
         size_t rows, size_t cols, const int *data, size_t est);
-int dance_init_named_cap(struct dance_matrix *m, size_t rows, size_t cols, 
+int dance_init_named_cap(struct dance_matrix *m, size_t rows, size_t cols,
         const int *data, char * const *names, size_t est);
 
 /*
@@ -67,7 +67,7 @@ int dance_init_named_cap(struct dance_matrix *m, size_t rows, size_t cols,
    of their indices, or in terms of their names; the |named| routine
    is defined in terms of the other.
 
-   Rows cannot efficiently be deleted from a matrix, but an inefficient 
+   Rows cannot efficiently be deleted from a matrix, but an inefficient
    routine is provided anyway.
 */
 int dance_addrow(struct dance_matrix *m,

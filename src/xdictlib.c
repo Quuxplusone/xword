@@ -10,7 +10,7 @@
 #define is_vowel(k) (strchr("aeiouy",k) != NULL)
 
 /*
-   For the time being, the |xdict| data is stored to disk as a single 
+   For the time being, the |xdict| data is stored to disk as a single
    gigantic text file, containing all the words in the dictionary in
    plain text separated by newlines.
 */
@@ -33,7 +33,7 @@ int xdict_load(struct xdict *d, const char *fname)
     xdict_sort(d);
     return rc;
 }
-    
+
 
 int xdict_save(struct xdict *d, const char *fname)
 {

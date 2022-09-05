@@ -238,7 +238,7 @@ int printme(const char *s, void *info_dummy)
 void engraveme(void)
 {
     /*
-       We print our results in columns with a total page width of 60 
+       We print our results in columns with a total page width of 60
        chars, leaving at least 4 spaces between columns and keeping
        at least three vertical rows whenever possible.
     */

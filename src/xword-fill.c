@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 
     switch (load_grid(gridfp, &grid, &gridw, &gridh)) {
         case 0: break;
-        case -2: do_error("I couldn't parse the grid%s!", 
+        case -2: do_error("I couldn't parse the grid%s!",
                      (gridfp==stdin)? "": " file");
         case -3: do_error("Out of memory loading grid!");
         default: do_error("Error loading grid file!");
@@ -168,7 +168,7 @@ int main(int argc, char **argv)
                  "Use option --allow_duplicate_words, or amend your input file.");
     }
     debug("Done checking for duplicate words in input grid.");
-    
+
     if (xdict_load(&dict, DictFilename) < 0)
       do_error("Error loading dictionary file '%s'!", DictFilename);
     debug("Done loading dictionary file '%s'.", DictFilename);
@@ -176,7 +176,7 @@ int main(int argc, char **argv)
     if (OutputFilename && stneq(OutputFilename, "-")) {
         outfp = fopen(OutputFilename, "w");
         if (outfp == NULL) {
-            do_error("I couldn't open file '%s' for output!", 
+            do_error("I couldn't open file '%s' for output!",
                 OutputFilename);
         }
     }
@@ -250,7 +250,7 @@ static int NUMBER_OF_SLICES(struct xword_info *info)
     int i;
     int unknown_cells = 0;
     if (UseNaiveMethod)
-     return n;    
+     return n;
     for (i=0; i < n; ++i) {
         if (is_fixed_value(grid[i])) continue;
         ++unknown_cells;
@@ -464,7 +464,7 @@ int xword_solve(const char *grid, int w, int h, struct xdict *dict, FILE *out)
         }
     }
 
-    printf("The completed matrix has %ld columns and %ld rows.\n", 
+    printf("The completed matrix has %ld columns and %ld rows.\n",
         (long)mat.ncolumns, (long)mat.nrows);
     printf("Solving...\n");
 
@@ -476,7 +476,7 @@ int xword_solve(const char *grid, int w, int h, struct xdict *dict, FILE *out)
         debug("dance_solve() returned %d", ns);
         do_error("There was an error in dance_solve(). Probably out of memory.");
     } else {
-        printf("There w%s %d solution%s found.\n", (ns==1)? "as": "ere", 
+        printf("There w%s %d solution%s found.\n", (ns==1)? "as": "ere",
             ns, (ns==1)? "": "s");
     }
 
@@ -515,7 +515,7 @@ int add_rows_for_word(const char *word, void *vinfo)
 
 
 int entry_fits_across(const char *grid, int w, int h,
-    int i, int j, const char *word, int wlen) 
+    int i, int j, const char *word, int wlen)
 {
     int exact_match = 1;
     int k;
@@ -581,7 +581,7 @@ int add_row_across(struct xword_info *info,
         if (UseNaiveMethod || !is_fixed_value(info->grid[cell])) {
             int slice = 27*2*CELL_TO_SLICE(cell, info);
             int relevant_index = ch2idx(word[k]);
-        
+
             /* Put (1 0) in one column-pair; put (0 1) in the other 25. */
             for (m=0; m < 26; ++m) {
                 constraint[idx++] = slice + 2*m + (relevant_index != m);
@@ -610,7 +610,7 @@ int add_row_down(struct xword_info *info,
         if (UseNaiveMethod || !is_fixed_value(info->grid[cell])) {
             int slice = 27*2*CELL_TO_SLICE(cell, info);
             int relevant_index = ch2idx(word[k]);
-        
+
             /* Put (0 1) in one column-pair; put (1 0) in the other 25. */
             for (m=0; m < 26; ++m) {
                 constraint[idx++] = slice + 2*m + (relevant_index == m);
@@ -654,7 +654,7 @@ int add_row_forced_across(struct dance_matrix *mat, int w, int h,
           break;
         assert(isalpha(grid[cell]));
         relevant_index = ch2idx(grid[cell]);
-        
+
         /* Put (1 0) in one column-pair; put (0 1) in the other 25. */
         for (m=0; m < 26; ++m) {
             constraint[idx++] = slice + 2*m + (relevant_index != m);
@@ -682,7 +682,7 @@ int add_row_forced_down(struct dance_matrix *mat, int w, int h,
           break;
         assert(isalpha(grid[cell]));
         relevant_index = ch2idx(grid[cell]);
-        
+
         /* Put (0 1) in one column-pair; put (1 0) in the other 25. */
         for (m=0; m < 26; ++m) {
             constraint[idx++] = slice + 2*m + (relevant_index == m);
@@ -750,7 +750,7 @@ int print_crossword_result(size_t n, struct data_object **sol, void *vinfo)
             /* Indeed it is. */
             continue;
         }
-        
+
         /* This is an Across word. Extract its letters. */
         o = sol[k];
         do {
@@ -839,12 +839,12 @@ int ptr_str_cmp(const void *vp, const void *vq)
 
 
 /*
-    This routine strips out all the "useless" words from the dictionary 
+    This routine strips out all the "useless" words from the dictionary
     --- words that can't possibly fit anywhere in the grid. This speeds
     up the solution of the matrix by a large factor, for grids in which
     we only care about one or two problem corners.
 
-    This routine also strips out any words that appear in the grid 
+    This routine also strips out any words that appear in the grid
     already, so that we don't duplicate any words.
 */
 void strip_dict(const char *grid, int w, int h, struct xdict *dict)
@@ -1026,7 +1026,7 @@ void do_help(int man)
     puts("   the dot or backtick ('.', '`') for empty squares. The grid");
     puts("   may also contain letters, which behave normally; the");
     puts("   numerals 0 and 1, which stand for \"any vowel\" and \"any");
-    puts("   consonant,\" respectively. Any other characters are treated"); 
+    puts("   consonant,\" respectively. Any other characters are treated");
     puts("   as the letter X when it comes to grid-filling.");
     puts(" The program transforms the input grid and dictionary into");
     puts("   a very large matrix of ones and zeros, and then looks for");

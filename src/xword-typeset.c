@@ -4,7 +4,7 @@
    July 2005. For use with Gerd Neugebauer's |cwpuzzle| package,
    version 1.4, dated November 1996.
 
-     This program reads a grid of letters and hashmarks (|#|) from 
+     This program reads a grid of letters and hashmarks (|#|) from
    a text file, and then outputs a LaTeX file containing instructions
    for typesetting the grid using Gerd Neugebauer's |cwpuzzle| package,
    and placeholders for adding the clues.
@@ -402,7 +402,7 @@ static int trim_xword(char grid[MAXGRID][MAXGRID], int *pxmax, int *pymax)
     int grid1hasletters = 0;
     int grid2hasletters = 0;
     int hashashes;
-    
+
     for (x=0; x < xmax; ++x) {
         int hasletters = 0;
         for (y=0; y < ymax; ++y) {

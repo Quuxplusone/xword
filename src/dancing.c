@@ -106,7 +106,7 @@ int dance_init_cap(struct dance_matrix *m,
     return rc;
 }
 
-int dance_init_named_cap(struct dance_matrix *m, size_t rows, size_t cols, 
+int dance_init_named_cap(struct dance_matrix *m, size_t rows, size_t cols,
     const int *data, char * const *names, size_t initial_size)
 {
     size_t i, j;
@@ -206,7 +206,7 @@ int dance_init_named_cap(struct dance_matrix *m, size_t rows, size_t cols,
    array bigger. When this happens, all the existing pointers get
    invalidated, and we have to traverse the entire structure to patch
    it up. This is why the client is allowed to give |dance_init| an
-   "initial size estimate" parameter --- to avoid the first few 
+   "initial size estimate" parameter --- to avoid the first few
    time-consuming resize operations.
 */
 static struct data_object *new_data_object(struct dance_matrix *m)
@@ -254,7 +254,7 @@ static void dancing_adjust_pointers(struct dance_matrix *m,
             if (o->down != c) T(o->down);
         }
     }
-#undef T    
+#undef T
 }
 
 
