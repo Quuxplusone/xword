@@ -184,6 +184,7 @@ int process(FILE *in, FILE *out)
     fprintf(out, "\\usepackage[left=1cm, right=1cm, top=2cm, bottom=1cm]{geometry}\n");
     fprintf(out, "\\usepackage[utf8]{inputenc}\n");
     fprintf(out, "\\usepackage[T1]{fontenc}\n");
+    fprintf(out, "\\usepackage{pict2e}\n");
     if (UseMulticol) {
         fprintf(out, "\\usepackage{multicol}\n");
     }
@@ -637,26 +638,28 @@ static int dump_boilerplate(FILE *out, int xmax, int ymax)
     fprintf(out, "    \\PuzzleX=0\\relax \\advance\\PuzzleY-1\n");
     fprintf(out, "  \\else\n");
     fprintf(out, "    \\ifx\\empty\\Puzzletmp\n");
-    fprintf(out, "    \\else\\if\\Puzzletmp*\n");
-    fprintf(out, "    \\put(\\PuzzleX,\\PuzzleY){"
-                               "\\framebox(1,1){\\PuzzleBlackBox}}\n");
-    fprintf(out, "    \\else\\put(\\PuzzleX,\\PuzzleY){"
-                                           "\\framebox(1,1){}}\\fi\n");
-    fprintf(out, "    \\fi\n");
+    fprintf(out, "    \\else\\if\\Puzzletmp *\n");
+    fprintf(out, "      \\put(\\PuzzleX,\\PuzzleY){\\framebox(1,1){\\PuzzleBlackBox}}\n");
+    fprintf(out, "    \\else\n");
+    fprintf(out, "      \\put(\\PuzzleX,\\PuzzleY){\\framebox(1,1){}}\n");
+    fprintf(out, "    \\fi\\fi\n");
     fprintf(out, "    \\def\\Puzzletmp{#1}%%\n");
-    fprintf(out, "    \\ifx\\empty\\Puzzletmp\\else\n");
-    fprintf(out, "      \\put(\\PuzzleX,\\PuzzleY)"
-                                          "{\\makebox(1,.9)[tl]{%%\n");
-    fprintf(out, "        \\hspace{.08\\PuzzleUnitlength}"
-                                      "\\PuzzleNumberFont #1}}\\fi\n");
+    fprintf(out, "    \\ifx\\empty\\Puzzletmp\n");
+    fprintf(out, "    \\else\n");
+    fprintf(out, "      \\put(\\PuzzleX,\\PuzzleY){\\makebox(1,.9)[tl]{%%\n");
+    fprintf(out, "        \\hspace{.08\\PuzzleUnitlength}\\PuzzleNumberFont #1}}\n");
+    fprintf(out, "    \\fi\n");
     fprintf(out, "    \\advance\\PuzzleX 1\n");
     fprintf(out, "  \\fi\n");
     fprintf(out, "}\n");
-    fprintf(out, "\\begingroup\\catcode`\\|=13\\catcode`\\_=13\n");
-    fprintf(out, "  \\gdef\\PuzzleHelper{\\catcode`\\|=13\n");
-    fprintf(out, "  \\gdef\\ClueHelper{\\catcode`\\_=13\\def_{"
-                       "\\underline{\\hskip 1ex}}\\catcode`\\&=12}\n");
-    fprintf(out, "\\let|=\\PuzzleBox}\n");
+    fprintf(out, "\\newcommand\\PuzzleCircledBox[2][]{%%\n");
+    fprintf(out, "  \\put(\\the\\PuzzleX.5,\\the\\PuzzleY.5){\\circle{.94}}\n");
+    fprintf(out, "  \\PuzzleBox[#1]{#2}\n");
+    fprintf(out, "}\n");
+    fprintf(out, "\\begingroup\n");
+    fprintf(out, "  \\catcode`\\|=13\\catcode`\\(=13\\catcode`\\_=13\n");
+    fprintf(out, "  \\gdef\\PuzzleHelper{\\catcode`\\|=13\\catcode`\\(=13\\let|=\\PuzzleBox\\let(=\\PuzzleCircledBox}\n");
+    fprintf(out, "  \\gdef\\ClueHelper{\\catcode`\\_=13\\def_{\\underline{\\hskip 1ex}}\\catcode`\\&=12}\n");
     fprintf(out, "\\endgroup\n");
     fprintf(out, "\\newenvironment{Puzzle}[2]{"
                                     "\\par\\noindent\\PuzzleHelper\n");
