@@ -39,6 +39,7 @@ static int MinUnitlength = 100;
 static int DefaultUnitlength = 200;
 
 static int UseCwpuzzleSty = 0;
+static int UseMulticol = 0;
 static char *OutputFilename = NULL;
 static char *PuzzleTitle = NULL;
 enum {HORIZ=1, VERT=2};
@@ -98,6 +99,7 @@ int main(int argc, char **argv)
                 case 'H': case 'h': do_help(0); break;
                 case 'P': UseCwpuzzleSty = 1; break;
                 case 'p': UseCwpuzzleSty = 0; break;
+                case '1': UseMulticol = 1; break;
                 default:
                     do_error("Unrecognized option(s) %s; -h for help",
                         argv[i]);
@@ -176,22 +178,26 @@ int process(FILE *in, FILE *out)
     /*
        Now we begin our output routine.
     */
-    fprintf(out, "\\documentclass%s{article}\n", (UseCwpuzzleSty? "": "[twocolumn]"));
+    const char *dcarg = UseCwpuzzleSty ? "" :
+                        UseMulticol ? "" : "[twocolumn]";
+    fprintf(out, "\\documentclass%s{article}\n", dcarg);
     fprintf(out, "\\usepackage[left=1cm, right=1cm, top=2cm, bottom=1cm]{geometry}\n");
     fprintf(out, "\\usepackage[utf8]{inputenc}\n");
     fprintf(out, "\\usepackage[T1]{fontenc}\n");
+    if (UseMulticol) {
+        fprintf(out, "\\usepackage{multicol}\n");
+    }
     if (UseCwpuzzleSty) {
         fprintf(out, "\\usepackage{cwpuzzle}\n\n");
         fprintf(out, "\\newenvironment{AcrossClues}{\\begin{Clues}{\\textbf{Across}}{\\end{Clues}}\n");
         fprintf(out, "\\newenvironment{DownClues}{\\begin{Clues}{\\textbf{Down}}{\\end{Clues}}\n");
+    } else {
+        dump_boilerplate(out, xmax, ymax);
     }
-    else
-      dump_boilerplate(out, xmax, ymax);
     fprintf(out, "\\begin{document}\n");
     fprintf(out, "\\pagestyle{empty}\\raggedright\n");
 
-    if (PuzzleTitle != NULL)
-    {
+    if (PuzzleTitle != NULL) {
         fputs("\\section*{", out);
         dump_HWEB_to_TeX(out, PuzzleTitle);
         fputs("}\n", out);
@@ -221,6 +227,9 @@ int process(FILE *in, FILE *out)
     }
     fputs("\\end{Puzzle}\n\n", out);
 
+    if (UseMulticol) {
+        fputs("\\begin{multicols}{2}\n", out);
+    }
     fputs("\\begin{AcrossClues}%\n", out);
     for (clue_idx=0; clue_idx < clue_max; ++clue_idx) {
         if ((clues[clue_idx][2] & HORIZ) == 0) continue;
@@ -249,9 +258,12 @@ int process(FILE *in, FILE *out)
         else fprintf(out, "clue");
         fprintf(out, "}\n");
     }
-    fputs("\\end{DownClues}\n\n", out);
+    fputs("\\end{DownClues}\n", out);
+    if (UseMulticol) {
+        fputs("\\end{multicols}\n", out);
+    }
 
-    fputs("\\end{document}\n", out);
+    fputs("\n\\end{document}\n", out);
 
 
     free(PuzzleTitle);
@@ -751,9 +763,10 @@ void do_help(int man)
 {
     if (man)
       goto man;
-    puts("xword-typeset [-?h] [-Pp] [-o outfile] filename");
+    puts("xword-typeset [-?h] [-Pp1] [-o outfile] filename");
     puts("Typesets a crossword puzzle in LaTeX.");
     puts("  -P[p]: Use [don't use] Gerd Neugebauer's cwpuzzle package");
+    puts("  -1: Don't lay out clues beside the grid");
     puts("  -o filename: send output to specified file");
     puts("  --help: show this message");
     puts("  --man: show complete help text");
@@ -773,6 +786,12 @@ void do_help(int man)
     puts("   LaTeX code heavily derivative of 'cwpuzzle'. The default");
     puts("   is recommended, because it handles the special character");
     puts("   '_' in an intuitive manner.");
+    puts(" The -1 option tells 'xword-typeset' to use the 'multicol'");
+    puts("   package in order to typeset the Across and Down clues in");
+    puts("   two-column layout, starting below the grid. The default");
+    puts("   behavior is to typeset the entire page in two-column");
+    puts("   layout, with some clues appearing to the right of the");
+    puts("   grid.");
     puts("");
     puts(" If the input file provides clues following the grid, they");
     puts("   should be in the form");
