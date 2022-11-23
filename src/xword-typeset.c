@@ -189,8 +189,8 @@ int process(FILE *in, FILE *out)
     }
     if (UseCwpuzzleSty) {
         fprintf(out, "\\usepackage{cwpuzzle}\n\n");
-        fprintf(out, "\\newenvironment{AcrossClues}{\\begin{Clues}{\\textbf{Across}}{\\end{Clues}}\n");
-        fprintf(out, "\\newenvironment{DownClues}{\\begin{Clues}{\\textbf{Down}}{\\end{Clues}}\n");
+        fprintf(out, "\\newenvironment{AcrossClues}{\\begin{Clues}{\\textbf{Across}}}{\\end{Clues}}\n");
+        fprintf(out, "\\newenvironment{DownClues}{\\begin{Clues}{\\textbf{Down}}}{\\end{Clues}}\n");
     } else {
         dump_boilerplate(out, xmax, ymax);
     }
