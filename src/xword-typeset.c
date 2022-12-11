@@ -3,6 +3,7 @@
    |Xword-typeset|, a public-domain program by Arthur O'Dwyer,
    July 2005. For use with Gerd Neugebauer's |cwpuzzle| package,
    version 1.4, dated November 1996.
+   Modifications by Arthur O'Dwyer, 2022.
 
      This program reads a grid of letters and hashmarks (|#|) from
    a text file, and then outputs a LaTeX file containing instructions
@@ -15,6 +16,7 @@
    those clues are typeset instead of clue placeholders.
 */
 
+#include <assert.h>
 #include <ctype.h>
 #include <limits.h>
 #include <stdarg.h>
@@ -40,6 +42,10 @@ static int DefaultUnitlength = 200;
 
 static int UseCwpuzzleSty = 0;
 static int UseMulticol = 0;
+static int PrintTitle = 1;
+static int PrintPuzzleGrid = 1;
+static int PrintSolutionGrid = 0;
+static int PrintClues = 1;
 static char *OutputFilename = NULL;
 static char *PuzzleTitle = NULL;
 enum {HORIZ=1, VERT=2};
@@ -73,8 +79,7 @@ int main(int argc, char **argv)
 
     Argv0 = argv[0];
 
-    for (i=1; i < argc; ++i)
-    {
+    for (i=1; i < argc; ++i) {
         if (argv[i][0] != '-') break;
         if (argv[i][1] == '\0') break;
 
@@ -82,18 +87,22 @@ int main(int argc, char **argv)
             LiteralInputNames = 1;
             ++i;
             break;
-        }
-        else if (steq(argv[i]+1, "-help") ||
-                 steq(argv[i]+1, "h") || steq(argv[i]+1, "?"))
-          do_help(0);
-        else if (steq(argv[i]+1, "-man")) do_help(1);
-        else if (steq(argv[i], "-o") || steq(argv[i], "-O")) {
+        } else if (steq(argv[i]+1, "-help") ||
+                   steq(argv[i]+1, "h") || steq(argv[i]+1, "?")) {
+            do_help(0);
+        } else if (steq(argv[i]+1, "-man")) {
+            do_help(1);
+        } else if (steq(argv[i]+1, "-solution-only")) {
+            PrintTitle = 0;
+            PrintPuzzleGrid = 0;
+            PrintSolutionGrid = 1;
+            PrintClues = 0;
+        } else if (steq(argv[i], "-o") || steq(argv[i], "-O")) {
             if (i >= argc-1) {
                 do_error("Need output filename with -o");
             }
             OutputFilename = argv[++i];
-        }
-        else {
+        } else {
             for (j=1; argv[i][j]; ++j) {
                 switch (argv[i][j]) {
                 case 'H': case 'h': do_help(0); break;
@@ -198,70 +207,89 @@ int process(FILE *in, FILE *out)
     fprintf(out, "\\begin{document}\n");
     fprintf(out, "\\pagestyle{empty}\\raggedright\n");
 
-    if (PuzzleTitle != NULL) {
+    if (PrintTitle && PuzzleTitle != NULL) {
         fputs("\\section*{", out);
         dump_HWEB_to_TeX(out, PuzzleTitle);
         fputs("}\n", out);
     }
 
-    fprintf(out, "\\begin{Puzzle}{%d}{%d}%%\n", xmax, ymax);
-    clue_idx = 0;
-    for (y=0; y < ymax; ++y) {
-        fprintf(out, "  ");
-        for (x=0; x < xmax; ++x) {
-            char cell = grid[y][x];
-            if (cell == '.') {
-                cell = 'X';  // '.' is magic to cwpuzzle.sty
+    if (PrintPuzzleGrid) {
+        fprintf(out, "\\begin{Puzzle}{%d}{%d}%%\n", xmax, ymax);
+        clue_idx = 0;
+        for (y=0; y < ymax; ++y) {
+            fprintf(out, "  ");
+            for (x=0; x < xmax; ++x) {
+                char cell = grid[y][x];
+                if (cell == '.') {
+                    cell = 'X';  // '.' is magic to cwpuzzle.sty
+                }
+                if (cell == '#') {
+                    fprintf(out, "|* ");
+                } else if ((clues[clue_idx][0]==x) && (clues[clue_idx][1]==y)) {
+                    fprintf(out, "|[%d]%c ", clue_idx+1, cell);
+                    ++clue_idx;
+                } else {
+                    fprintf(out, "|%c ", cell);
+                }
             }
-            if (cell == '#') {
-                fprintf(out, "|* ");
-            }
-            else if ((clues[clue_idx][0]==x) && (clues[clue_idx][1]==y)) {
-                fprintf(out, "|[%d]%c ", clue_idx+1, cell);
-                ++clue_idx;
-            }
-            else {
-                fprintf(out, "|%c ", cell);
-            }
+            fprintf(out, "|.\n");
         }
-        fprintf(out, "|.\n");
+        fputs("\\end{Puzzle}\n\n", out);
     }
-    fputs("\\end{Puzzle}\n\n", out);
 
-    if (UseMulticol) {
-        fputs("\\begin{multicols}{2}\n", out);
+    if (PrintSolutionGrid) {
+        fprintf(out, "\\begin{Puzzle}{%d}{%d}%%\n", xmax, ymax);
+        for (y=0; y < ymax; ++y) {
+            fprintf(out, "  ");
+            for (x=0; x < xmax; ++x) {
+                char cell = grid[y][x];
+                if (cell == '#') {
+                    fprintf(out, "|*    ");
+                } else {
+                    fprintf(out, "|[%c]X ", toupper(cell));
+                }
+            }
+            fprintf(out, "|.\n");
+        }
+        fputs("\\end{Puzzle}\n\n", out);
     }
-    fputs("\\begin{AcrossClues}%\n", out);
-    for (clue_idx=0; clue_idx < clue_max; ++clue_idx) {
-        if ((clues[clue_idx][2] & HORIZ) == 0) continue;
-        fprintf(out, "  \\Clue{%d}{", clue_idx+1);
-        y = clues[clue_idx][1];
-        for (x = clues[clue_idx][0]; x < xmax && grid[y][x] != '#'; ++x)
-          fprintf(out, "%c", grid[y][x]);
-        fprintf(out, "}{");
-        if (hcluetext && hcluetext[clue_idx])
-          dump_HWEB_to_TeX(out, hcluetext[clue_idx]);
-        else fprintf(out, "clue");
-        fprintf(out, "}\n");
-    }
-    fputs("\\end{AcrossClues}%\n", out);
 
-    fputs("\\begin{DownClues}%\n", out);
-    for (clue_idx=0; clue_idx < clue_max; ++clue_idx) {
-        if ((clues[clue_idx][2] & VERT) == 0) continue;
-        fprintf(out, "  \\Clue{%d}{", clue_idx+1);
-        x = clues[clue_idx][0];
-        for (y = clues[clue_idx][1]; y < ymax && grid[y][x] != '#'; ++y)
-          fprintf(out, "%c", grid[y][x]);
-        fprintf(out, "}{");
-        if (vcluetext && vcluetext[clue_idx])
-          dump_HWEB_to_TeX(out, vcluetext[clue_idx]);
-        else fprintf(out, "clue");
-        fprintf(out, "}\n");
-    }
-    fputs("\\end{DownClues}\n", out);
-    if (UseMulticol) {
-        fputs("\\end{multicols}\n", out);
+    if (PrintClues) {
+        if (UseMulticol) {
+            fputs("\\begin{multicols}{2}\n", out);
+        }
+        fputs("\\begin{AcrossClues}%\n", out);
+        for (clue_idx=0; clue_idx < clue_max; ++clue_idx) {
+            if ((clues[clue_idx][2] & HORIZ) == 0) continue;
+            fprintf(out, "  \\Clue{%d}{", clue_idx+1);
+            y = clues[clue_idx][1];
+            for (x = clues[clue_idx][0]; x < xmax && grid[y][x] != '#'; ++x)
+              fprintf(out, "%c", grid[y][x]);
+            fprintf(out, "}{");
+            if (hcluetext && hcluetext[clue_idx])
+              dump_HWEB_to_TeX(out, hcluetext[clue_idx]);
+            else fprintf(out, "clue");
+            fprintf(out, "}\n");
+        }
+        fputs("\\end{AcrossClues}%\n", out);
+
+        fputs("\\begin{DownClues}%\n", out);
+        for (clue_idx=0; clue_idx < clue_max; ++clue_idx) {
+            if ((clues[clue_idx][2] & VERT) == 0) continue;
+            fprintf(out, "  \\Clue{%d}{", clue_idx+1);
+            x = clues[clue_idx][0];
+            for (y = clues[clue_idx][1]; y < ymax && grid[y][x] != '#'; ++y)
+              fprintf(out, "%c", grid[y][x]);
+            fprintf(out, "}{");
+            if (vcluetext && vcluetext[clue_idx])
+              dump_HWEB_to_TeX(out, vcluetext[clue_idx]);
+            else fprintf(out, "clue");
+            fprintf(out, "}\n");
+        }
+        fputs("\\end{DownClues}\n", out);
+        if (UseMulticol) {
+            fputs("\\end{multicols}\n", out);
+        }
     }
 
     fputs("\n\\end{document}\n", out);
@@ -614,8 +642,7 @@ static int dump_boilerplate(FILE *out, int xmax, int ymax)
     if (UseCwpuzzleSty) {
         if (PuzzleUnitlength*xmax > 75*INCH_IN_POINTS)
           PuzzleUnitlength = (75*INCH_IN_POINTS) / xmax;
-    }
-    else {
+    } else {
         /* Two-column layout. */
         if (PuzzleUnitlength*xmax > 37*INCH_IN_POINTS)
           PuzzleUnitlength = (37*INCH_IN_POINTS) / xmax;
@@ -628,6 +655,7 @@ static int dump_boilerplate(FILE *out, int xmax, int ymax)
     fprintf(out, "\\newlength\\PuzzleUnitlength\n");
     fprintf(out, "\\PuzzleUnitlength=%.1fpt\n", PuzzleUnitlength/10.0);
     fprintf(out, "\\newcommand\\PuzzleNumberFont{\\sf\\scriptsize}\n");
+    fprintf(out, "\\newcommand\\PuzzleSolutionFont{\\sf\\bfseries\\LARGE}\n");
     fprintf(out, "\\newcount\\PuzzleX\n");
     fprintf(out, "\\newcount\\PuzzleY\n");
     fprintf(out, "\\newcommand\\PuzzleBlackBox{\\rule{"
@@ -646,8 +674,12 @@ static int dump_boilerplate(FILE *out, int xmax, int ymax)
     fprintf(out, "    \\def\\Puzzletmp{#1}%%\n");
     fprintf(out, "    \\ifx\\empty\\Puzzletmp\n");
     fprintf(out, "    \\else\n");
-    fprintf(out, "      \\put(\\PuzzleX,\\PuzzleY){\\makebox(1,.9)[tl]{%%\n");
-    fprintf(out, "        \\hspace{.08\\PuzzleUnitlength}\\PuzzleNumberFont #1}}\n");
+    if (PrintSolutionGrid) {
+        assert(!PrintPuzzleGrid);  // TODO: permit them to coexist
+        fprintf(out, "      \\put(\\PuzzleX,\\PuzzleY){\\makebox(1,1){\\PuzzleSolutionFont #1}}\n");
+    } else {
+        fprintf(out, "      \\put(\\PuzzleX,\\PuzzleY){\\makebox(1,.9)[tl]{\\hspace{.08\\PuzzleUnitlength}\\PuzzleNumberFont #1}}\n");
+    }
     fprintf(out, "    \\fi\n");
     fprintf(out, "    \\advance\\PuzzleX 1\n");
     fprintf(out, "  \\fi\n");
@@ -766,10 +798,11 @@ void do_help(int man)
 {
     if (man)
       goto man;
-    puts("xword-typeset [-?h] [-Pp1] [-o outfile] filename");
+    puts("xword-typeset [-?h] [-Pp1] [--solution-only] [-o outfile] filename");
     puts("Typesets a crossword puzzle in LaTeX.");
     puts("  -P[p]: Use [don't use] Gerd Neugebauer's cwpuzzle package");
     puts("  -1: Don't lay out clues beside the grid");
+    puts("  --solution-only: Print only the solution grid");
     puts("  -o filename: send output to specified file");
     puts("  --help: show this message");
     puts("  --man: show complete help text");
@@ -789,6 +822,8 @@ void do_help(int man)
     puts("   LaTeX code heavily derivative of 'cwpuzzle'. The default");
     puts("   is recommended, because it handles the special character");
     puts("   '_' in an intuitive manner.");
+    puts(" The --solution-only option prints a solution grid, without");
+    puts("   title, clues, or grid numbers.");
     puts(" The -1 option tells 'xword-typeset' to use the 'multicol'");
     puts("   package in order to typeset the Across and Down clues in");
     puts("   two-column layout, starting below the grid. The default");
