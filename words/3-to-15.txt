@@ -1291,6 +1291,7 @@ mcd
 mci
 mcm
 mcs
+mcu
 mdc
 mdi
 mdl
@@ -1702,6 +1703,7 @@ pou
 pow
 pox
 ppd
+ppe
 ppm
 ppp
 pps
@@ -2184,7 +2186,6 @@ uni
 uno
 uns
 unu
-uor
 upa
 upc
 upi
@@ -2258,6 +2259,7 @@ von
 vos
 vow
 vox
+vps
 vso
 vuh
 vwg
@@ -3317,9 +3319,11 @@ cays
 cber
 ccci
 cccp
+ccii
 ccny
 ccon
 ccpr
+ccvi
 cdli
 cdna
 cdrs
@@ -3760,6 +3764,7 @@ dits
 ditz
 diva
 dive
+diys
 djin
 dkny
 dlii
@@ -3845,6 +3850,7 @@ drib
 drip
 drno
 drop
+droz
 drub
 drug
 drum
@@ -6287,6 +6293,7 @@ odes
 odic
 odie
 odin
+odom
 odor
 oecd
 oeds
@@ -7908,6 +7915,7 @@ tsos
 tsps
 ttfn
 tttt
+ttyl
 tuba
 tube
 tubs
@@ -8092,6 +8100,7 @@ vest
 veto
 vets
 vext
+vger
 vial
 vias
 vibe
@@ -10725,6 +10734,7 @@ cover
 coves
 covet
 covey
+covid
 covin
 cowan
 cowed
@@ -19243,9 +19253,11 @@ unwon
 unzip
 upbow
 upbye
+updog
 updos
 updry
 upend
+upenn
 upfor
 uplit
 upona
@@ -19578,7 +19590,6 @@ wasps
 waspy
 waste
 wasts
-watap
 watch
 water
 watts
@@ -19932,6 +19943,7 @@ yente
 yentl
 yerba
 yerks
+yeses
 yesno
 yetis
 yetts
@@ -22148,6 +22160,7 @@ briers
 briery
 briggs
 bright
+brillo
 brills
 brined
 briner
@@ -27205,6 +27218,7 @@ hazily
 hazing
 hazmat
 hazzan
+hbomax
 hbombs
 headed
 header
@@ -28081,6 +28095,7 @@ itself
 itspat
 itunes
 iturbi
+ivanka
 ivanov
 ixodid
 ixoras
@@ -29896,6 +29911,7 @@ megass
 megilp
 megohm
 megrim
+mehmet
 meinie
 mekong
 melded
@@ -34138,6 +34154,7 @@ select
 selena
 selene
 selfed
+selfie
 selina
 seljuk
 selkie
@@ -34507,6 +34524,7 @@ sighed
 sigher
 sights
 sigils
+sigler
 sigloi
 siglos
 sigmas
@@ -36865,6 +36883,7 @@ ulster
 ultima
 ultimo
 ultras
+ultron
 umbels
 umbers
 umbles
@@ -37661,8 +37680,6 @@ wasted
 waster
 wastes
 wastry
-watape
-wataps
 waters
 watery
 watson
@@ -42434,6 +42451,7 @@ chewers
 chewier
 chewing
 chewink
+chewtoy
 chianti
 chiasma
 chiasmi
@@ -44836,7 +44854,6 @@ doggies
 dogging
 doggish
 doggone
-doggrel
 doghair
 doglegs
 doglike
@@ -53873,7 +53890,6 @@ octuple
 octuply
 oculars
 oculist
-ocurred
 odalisk
 oddball
 oddlots
@@ -58802,6 +58818,7 @@ sejeant
 selects
 selenic
 selfdom
+selfies
 selfing
 selfish
 seljuks
@@ -59003,6 +59020,7 @@ shammer
 shammes
 shammos
 shampoo
+shamwow
 shanana
 shanked
 shannen
@@ -61616,7 +61634,9 @@ thawers
 thawing
 theater
 theatre
+thebald
 theblob
+theboys
 thecars
 thecate
 theduke
@@ -63773,7 +63793,6 @@ wastier
 wasting
 wastrel
 wastrie
-watapes
 watched
 watcher
 watches
@@ -69507,6 +69526,7 @@ chevying
 chewable
 chewiest
 chewinks
+chewtoys
 cheyenne
 chiasmal
 chiasmas
@@ -72624,6 +72644,7 @@ dockyard
 doctoral
 doctored
 doctorno
+doctoroz
 doctrine
 document
 doddered
@@ -74892,6 +74913,7 @@ fittable
 fittings
 fitzalan
 fivefold
+fiveguys
 fiveiron
 fivepins
 fivestar
@@ -77860,6 +77882,7 @@ hoosegow
 hoosgows
 hoosiers
 hootiest
+hootowls
 hoovered
 hopalong
 hopefuls
@@ -81232,6 +81255,7 @@ megaword
 megillah
 megilphs
 mehlindi
+mehmetoz
 melamdim
 melamine
 melanges
@@ -82333,6 +82357,7 @@ myosotis
 myotomes
 myotonia
 myotonic
+mypillow
 myriapod
 myriopod
 myrmidon
@@ -89388,7 +89413,6 @@ shafting
 shagbark
 shaggier
 shaggily
-shagging
 shagreen
 shahdoms
 shaitans
@@ -89419,6 +89443,7 @@ shamuses
 shandies
 shanghai
 shanking
+shannara
 shannies
 shanteys
 shanties
@@ -92725,6 +92750,7 @@ theelins
 theelols
 theemmys
 thefence
+thegreat
 thehague
 theistic
 thejoker
@@ -92757,6 +92783,7 @@ thermite
 theropod
 thesauri
 theshire
+theshort
 thespian
 thessaly
 thestand
@@ -93823,6 +93850,7 @@ turreted
 turrical
 turtlers
 turtling
+turturro
 tuskegee
 tuskless
 tusklike
@@ -99546,6 +99574,8 @@ brigadoon
 brightens
 brightest
 brilliant
+brillobox
+brillopad
 brillouin
 brimstone
 bringdown
@@ -100328,6 +100358,7 @@ catchment
 catchpole
 catchpoll
 catchword
+catdander
 catechins
 catechism
 catechist
@@ -100788,6 +100819,7 @@ chowhound
 chowtimes
 chresards
 chrismons
+chrispine
 christens
 christian
 christies
@@ -103662,6 +103694,7 @@ dodgedart
 dodgeries
 dodginess
 dogcollar
+dogdander
 dogearing
 dogeatdog
 dogeships
@@ -103936,6 +103969,7 @@ drouthier
 drownding
 drowsiest
 drscholls
+drstrange
 drubbings
 druggiest
 druggists
@@ -104182,6 +104216,7 @@ edelweiss
 edentates
 edibility
 edictally
+ediefalco
 edinburgh
 editedout
 editorial
@@ -107280,6 +107315,7 @@ grimalkin
 griminess
 grimoires
 grindings
+gringotts
 grippiest
 gripsacks
 grisaille
@@ -110014,6 +110050,7 @@ laborings
 laborious
 laborites
 labradors
+labresult
 laburnums
 labyrinth
 laccolith
@@ -111535,6 +111572,7 @@ metacarpi
 metalists
 metalized
 metalizes
+metallica
 metallics
 metalling
 metallize
@@ -111662,6 +111700,7 @@ migrators
 migratory
 miguelito
 mijnheers
+mikepence
 milakunis
 milchcows
 mildening
@@ -113100,6 +113139,7 @@ nystagmus
 nystatins
 oakleaves
 oakmosses
+oakpollen
 oarfishes
 oarswoman
 oarswomen
@@ -114223,6 +114263,7 @@ palterers
 paltering
 paltriest
 paludisms
+pambeesly
 pamperers
 pampering
 pamphlets
@@ -116467,6 +116508,7 @@ quickness
 quicksand
 quicksets
 quickstep
+quidditch
 quidnuncs
 quiescent
 quietened
@@ -121589,6 +121631,7 @@ taeniasis
 taffarels
 tafferels
 taffrails
+taffypull
 tagalongs
 tagboards
 tahitians
@@ -121986,6 +122029,7 @@ thatchier
 thatching
 thatslife
 thcentury
+theaeneid
 theartist
 theatrics
 thebaines
@@ -126208,6 +126252,7 @@ androphore
 androphyll
 andropogon
 androspore
+andyserkis
 andywarhol
 anecdotage
 anecdotist
@@ -128485,6 +128530,7 @@ brightwork
 brigittine
 brilliance
 brilliancy
+brillopads
 brimborion
 brimborium
 brimmingly
@@ -129672,6 +129718,7 @@ choruslike
 chouquette
 chousingha
 chrematist
+chrisevans
 christabel
 christened
 christener
@@ -131563,6 +131610,7 @@ definitude
 deflagrate
 deflection
 deflective
+defleppard
 deflexible
 deflowerer
 defoliated
@@ -132701,6 +132749,7 @@ drawfiling
 drawlingly
 drawspring
 drawstring
+drdolittle
 dreadfully
 dreadingly
 dreamfully
@@ -138110,6 +138159,7 @@ ithomiidae
 ithomiinae
 itinerancy
 itonididae
+ivanatrump
 jabberment
 jabberwock
 jaboticaba
@@ -138180,6 +138230,7 @@ jewishness
 jezebelian
 jezebelish
 jezreelite
+jimhalpert
 jimpricute
 jinglingly
 jingoistic
@@ -138236,6 +138287,7 @@ jumboesque
 juncaceous
 junctional
 juneflower
+junglebook
 jungleside
 junglewood
 juniorship
@@ -138465,6 +138517,7 @@ labiovelar
 laboratory
 laboringly
 laborously
+labresults
 laccolitic
 laceflower
 lacemaking
@@ -147228,6 +147281,7 @@ roadmaster
 roadworthy
 roastingly
 roberdsman
+robertiler
 robertryan
 robinoside
 roboration
@@ -150724,6 +150778,7 @@ taeniiform
 taeniosome
 taeniosomi
 taffymaker
+taffypulls
 tagraggery
 tahseeldar
 taiglesome
@@ -151249,6 +151304,7 @@ theromorph
 thersitean
 thespesius
 thessalian
+thetempest
 thethinman
 thetically
 thetrojans
@@ -152351,6 +152407,7 @@ ultrapious
 ultraproud
 ultrarapid
 ultrasonic
+ultrasound
 ultratense
 ultratotal
 ultravirus
@@ -156561,6 +156618,7 @@ agedparents
 agelessness
 agentorange
 ageofreason
+ageofultron
 agesandages
 agglomerant
 agglomerate
@@ -158588,6 +158646,7 @@ baffleboard
 baffleplate
 baftaawards
 baggagedeck
+baggervance
 bagginghook
 baggyshorts
 bagofnerves
@@ -159418,6 +159477,7 @@ bladderwort
 bladerunner
 blairmorite
 blakeberyed
+blakelively
 blamelessly
 blameworthy
 blanchingly
@@ -159926,6 +159986,7 @@ brightlight
 brightsmith
 brightspark
 brilliantly
+brilloboxes
 brillolette
 brimfulness
 brineshrimp
@@ -162802,6 +162863,7 @@ corocleisis
 corollarial
 corolliform
 coronagraph
+coronavirus
 coronership
 coroplastic
 corporalism
@@ -170445,6 +170507,7 @@ hugeousness
 hugestrides
 hughdowding
 hughjackman
+hughlofting
 hughwalpole
 hugogrotius
 hugthecoast
@@ -172378,6 +172441,7 @@ itsworthago
 itsyourcall
 ittakestime
 iunderstand
+ivankatrump
 ivornovello
 ixionswheel
 jabberingly
@@ -184091,6 +184155,7 @@ ringfingers
 ringingness
 ringingtone
 ringnetwork
+ringofpower
 ringofsteel
 ringoftruth
 ringpullcan
@@ -184161,6 +184226,7 @@ robertboyle
 robertburns
 robertcecil
 robertdonat
+robertevans
 robertfludd
 robertfrost
 roberthardy
@@ -185273,6 +185339,7 @@ selffulness
 selfharming
 selfhealing
 selfhelping
+selfiestick
 selfimposed
 selfinduced
 selfishness
@@ -189697,6 +189764,7 @@ tonybennett
 tonyhancock
 tonyhayward
 tonyjacklin
+tonysoprano
 tookabreath
 tookachance
 tookacorner
@@ -190656,6 +190724,7 @@ ultrashrewd
 ultrasimian
 ultrasolemn
 ultrasonics
+ultrasounds
 ultrastrict
 ultrasubtle
 ultraurgent
@@ -195102,6 +195171,7 @@ ahollowlaugh
 ahouseofsand
 ahuskofhares
 aichmophobia
+aidaturturro
 aiguesmortes
 aiguillesque
 aiguilletted
@@ -203994,6 +204064,7 @@ floorcleaner
 floormanager
 floortrading
 floreatetona
+florencepugh
 florentinism
 floriculture
 floscularian
@@ -205430,6 +205501,7 @@ grilledsteak
 grimmiaceous
 grindinghalt
 grindingpain
+grindmygears
 grindtoahalt
 grindtoapulp
 gringophobia
@@ -205438,6 +205510,8 @@ grippingness
 griqualander
 gristmilling
 gritblasting
+gritherteeth
+grithisteeth
 grizeldapugh
 grizzlybears
 grolieresque
@@ -206284,6 +206358,7 @@ hexacorallan
 hexacorallia
 hexadactylic
 hexadecanoic
+hexaflexagon
 hexagrammoid
 hexahydrated
 hexametrical
@@ -206700,6 +206775,7 @@ hubblebubble
 hucklebacked
 hudsonstrait
 huggermugger
+hugsthecoast
 hulverheaded
 humanfrailty
 humanistical
@@ -208644,6 +208720,7 @@ johnsonianly
 johnstrupite
 johntravolta
 johntrumbull
+johnturturro
 johnvanbrugh
 johnwilliams
 johnwycliffe
@@ -208708,6 +208785,7 @@ jumpingjacks
 jumpthequeue
 juncagineous
 jungermannia
+junglecruise
 juniordoctor
 juniorschool
 juniperaceae
@@ -208754,6 +208832,7 @@ kaleidoscope
 kaliophilite
 kalokagathia
 kalymmaukion
+kamalaharris
 kangaroovine
 karateexpert
 karyochylema
@@ -209349,6 +209428,7 @@ leptotrichia
 lepuyenvelay
 lerneanhydra
 lesleyjoseph
+leslieodomjr
 lespatineurs
 lesrendevous
 lessabundant
@@ -210358,6 +210438,7 @@ marriedwomen
 marrowfatpea
 marrowsquash
 marryforlove
+marsexplorer
 marshallplan
 marshharrier
 marsileaceae
@@ -210870,6 +210951,7 @@ michaellandy
 michaelnyman
 michaelpalin
 michaelrosen
+michaelscott
 michaelsheen
 mickeyrooney
 mickeyrourke
@@ -218621,6 +218703,7 @@ ringedplover
 ringhitching
 ringinthenew
 ringsideseat
+ringsofpower
 ringspanners
 ringstreaked
 ringthebells
@@ -218959,6 +219042,7 @@ rustlingness
 rustremoving
 rutaecarpine
 ruthlessness
+ryanreynolds
 sabbatically
 sabellianism
 sabellianize
@@ -219633,6 +219717,7 @@ selffinanced
 selfflattery
 selfgoverned
 selfhypnosis
+selfiesticks
 selfinterest
 selflessness
 selflimiting
@@ -220032,7 +220117,6 @@ sheepherding
 sheepishness
 sheepkeeping
 sheeprustler
-sheepshagger
 sheepshearer
 sheepssorrel
 sheepstealer
@@ -221954,6 +222038,7 @@ successstory
 succinctness
 succussation
 succussatory
+suckerfishes
 suckitandsee
 suddenattack
 suddenchange
@@ -222393,7 +222478,6 @@ symbouleutic
 symbranchoid
 symbranchous
 sympathizing
-sympathyshag
 sympathyvote
 symphalangus
 symphenomena
@@ -222496,6 +222580,7 @@ taeniodontia
 taenioglossa
 taeniosomous
 taffetaweave
+taffypulling
 taggingalong
 tagliacotian
 tagwrestlers
@@ -228698,6 +228783,7 @@ anicecupoftea
 anidiomatical
 animadversion
 animadversive
+animaldoctors
 animalivorous
 animalization
 animalkingdom
@@ -232575,6 +232661,7 @@ corolliferous
 coronagraphic
 coronalsuture
 coronationmug
+coronaviruses
 coronerscourt
 coronobasilar
 coronofrontal
@@ -233168,6 +233255,7 @@ darjeelingtea
 darkandgloomy
 darkchocolate
 darkcontinent
+darkofthemoon
 darningneedle
 dashoneshopes
 dastardliness
@@ -233985,6 +234073,7 @@ doctorjohnson
 doctorkildare
 doctorofmusic
 doctorsorders
+doctorstrange
 doctorzhivago
 doctrinairism
 documentalist
@@ -236735,11 +236824,19 @@ griefstricken
 grievingwidow
 grilledcheese
 grinandbearit
+grindhergears
+grindherteeth
+grindhisgears
+grindhisteeth
 grindingstone
+grindsmygears
 grindstoahalt
+gringottsbank
 grinningskull
 grisedalepike
 gritonesteeth
+gritsherteeth
+gritshisteeth
 grittinglorry
 grityourteeth
 groaningboard
@@ -237397,6 +237494,7 @@ heuristically
 hexactinellid
 hexadactylism
 hexadactylous
+hexaflexagons
 hexagrammidae
 hexamethylene
 hexanaphthene
@@ -237563,6 +237661,7 @@ homalopterous
 homalosternal
 homalosternii
 homeadvantage
+homeboxoffice
 homeeconomics
 homeeconomist
 homegrownfood
@@ -238638,6 +238737,7 @@ inspectorship
 inspirability
 inspirational
 inspiritingly
+instagramming
 instantaneity
 instantaneous
 instantcoffee
@@ -248752,8 +248852,6 @@ shedlightupon
 shedsomelight
 sheeprustlers
 sheeprustling
-sheepshaggers
-sheepshagging
 sheepsheadism
 sheepshearers
 sheepshearing
@@ -254034,6 +254132,7 @@ violentcrimes
 violentstorms
 violoncellist
 vipersbugloss
+virgilsaeneid
 virginforests
 virginiastock
 virginiawater
@@ -255304,6 +255403,7 @@ allagophyllous
 allantochorion
 allarmsandlegs
 allbutfinished
+allclearsignal
 allegorization
 allelomorphism
 allemandesauce
@@ -257628,6 +257728,7 @@ charleskennedy
 charlesrichter
 charlessaatchi
 charlessurface
+charlesthebald
 charliechaplin
 charlieparsons
 charlizetheron
@@ -261586,8 +261687,14 @@ greypropaganda
 gridreferences
 griffonvulture
 griffrhysjones
+grindonesgears
 grindonesteeth
+grindshergears
+grindsherteeth
+grindshisgears
+grindshisteeth
 gristtothemill
+gritsonesteeth
 groominwaiting
 gropeinthedark
 grossification
@@ -262324,6 +262431,7 @@ howthingsstand
 howtimeschange
 huberthumphrey
 huddletogether
+huggedthecoast
 hughbonneville
 hugovandergoes
 humangeography
@@ -263026,6 +263134,7 @@ inspectormorse
 inspectorrebus
 inspirationist
 inspirerespect
+instagrammable
 installwindows
 instalmentplan
 instantdislike
@@ -271402,6 +271511,7 @@ stentorophonic
 stepfatherhood
 stepgrandchild
 stephanokontae
+stephenbaldwin
 stephendedalus
 stephenhawking
 stepheniemeyer
@@ -272162,6 +272272,7 @@ syrianelephant
 syrophoenician
 systematically
 systematicness
+systemoperator
 systemoverload
 systemsanalyst
 systemsbiology
@@ -275747,6 +275858,7 @@ allaccountedfor
 allagostemonous
 allamericanhero
 allanquatermain
+allclearsignals
 allcomersrecord
 alldaybreakfast
 alldoomandgloom
@@ -280597,6 +280709,8 @@ greyhoundracing
 grigoryrasputin
 grindingpoverty
 grindingtoahalt
+grindsonesgears
+grindsonesteeth
 grinlinggibbons
 gristtoonesmill
 gristtoyourmill
@@ -281182,6 +281296,7 @@ huckleberryfinn
 huddledtogether
 hudibrastically
 huffedandpuffed
+huggingthecoast
 hughtrevorroper
 humancannonball
 humanguineapigs
@@ -282077,8 +282192,10 @@ jameskeirhardie
 jamesofalphaeus
 jamesrosenquist
 jamessteerforth
+jamielynnsigler
+jamielynnspears
 januarythefirst
-japaneseanenome
+japaneseanemone
 japanesebobtail
 japaneselantern
 japanesemacaque
@@ -288509,6 +288626,7 @@ syphilidography
 syphilidologist
 systematicality
 systematization
+systemoperators
 systemsanalysis
 systemsengineer
 systemsplanning
