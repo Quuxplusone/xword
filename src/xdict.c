@@ -434,7 +434,6 @@ void page(const char *s)
 {
     static int lines_in_this_para;
     static int lines_dumped_this_page = 0;
-    static int para_line;
     static int dump_count;
 
     if (s == NULL) {
@@ -444,7 +443,6 @@ void page(const char *s)
 
     if (glob_paralines > 0) {
         lines_in_this_para = glob_paralines;
-        para_line = 0;
         glob_paralines = 0;
         if (lines_dumped_this_page + lines_in_this_para <= glob_pageheight)
           dump_count = lines_in_this_para;

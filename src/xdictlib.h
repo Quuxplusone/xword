@@ -1,11 +1,12 @@
 
 #ifndef H_XDICTLIB
  #define H_XDICTLIB
- #ifdef __cplusplus
-   extern "C" {
- #endif
 
 #include <stdlib.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
    The |xdict| interface.
@@ -40,7 +41,8 @@ int xdict_find(struct xdict *d, const char *pattern,
 int xdict_find_scrabble(struct xdict *d, const char *rack, const char *mustuse,
                         int (*f)(const char *, void *), void *info);
 
- #ifdef __cplusplus
-   }
- #endif
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 #endif

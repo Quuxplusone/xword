@@ -19,6 +19,10 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct data_object {
     struct data_object *up, *down, *left, *right;
     struct column_object *column;
@@ -126,5 +130,9 @@ int dance_solve_dumb(struct dance_matrix *m,
    |dance_sample_callback| always returns 1.
 */
 int dance_sample_callback(size_t, struct data_object **, void *);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif
