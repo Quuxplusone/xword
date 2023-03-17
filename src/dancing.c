@@ -474,6 +474,11 @@ int dancing_search(size_t k, struct dance_matrix *m,
                 if (minsize <= 1) break;
             }
         }
+        if (minsize == 0) {
+            /* If the most constrained column is unsatisfiable, don't even
+             * bother to cover it. Just backtrack. */
+            return count;
+        }
     } while (0);
 
     /* Cover column |c|. */
@@ -495,7 +500,7 @@ int dancing_search(size_t k, struct dance_matrix *m,
         }
     }
 
-    /* Uncover column |c| and return. */
+    /* Uncover column |c| and backtrack. */
     dancing_uncover(c);
     return count;
 }
